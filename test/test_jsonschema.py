@@ -1,8 +1,8 @@
 """Test module."""
-from schemastore import Store
+import schemastore
 
 
 def test_one() -> None:
     """Test one."""
-    store = Store()
-    assert store.catalog is not None
+    registry = schemastore.registry()
+    assert registry is not None

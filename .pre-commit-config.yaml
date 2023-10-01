@@ -71,6 +71,7 @@ repos:
           - packaging
           - pytest
           - pytest-mock
+          - referencing
           - types-PyYAML
           - types-pkg_resources
           - types-requests
