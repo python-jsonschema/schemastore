@@ -1,4 +1,5 @@
 """schemastore package."""
+
 import os
 from datetime import timedelta
 from json import JSONDecodeError
