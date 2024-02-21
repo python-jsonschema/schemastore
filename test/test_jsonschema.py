@@ -1,4 +1,5 @@
 """Test module."""
+
 import schemastore
 
 
