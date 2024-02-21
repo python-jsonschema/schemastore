@@ -5,12 +5,14 @@ from json import JSONDecodeError
 from typing import Any
 
 import requests_cache
+from referencing import Registry, Resource
+from referencing.jsonschema import Schema, SchemaRegistry
 from requests import HTTPError
 
 CATALOG_URL = "https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/api/json/catalog.json"
 
 
-class Store:
+class _Store:
     """Store class for interacting with the store."""
 
     def __init__(self, days: int = 30) -> None:
@@ -39,4 +41,14 @@ class Store:
                 print(f"Failed to decode {schema['url']}: {type(exc)}")
 
 
-__all__ = ["Store"]
+def registry(**kwargs: Any) -> SchemaRegistry:
+    """Create a registry."""
+    store = _Store(**kwargs)
+
+    def retrieve(uri: str) -> Resource[Schema]:
+        return Resource.from_contents(store.get_schema(uri))
+
+    return Registry(retrieve=retrieve)  # type: ignore
+
+
+__all__ = ["registry"]

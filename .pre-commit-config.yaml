@@ -41,7 +41,7 @@ repos:
         types: [file, yaml]
         entry: yamllint --strict
   - repo: https://github.com/PyCQA/isort
-    rev: 5.10.1
+    rev: 5.12.0
     hooks:
       - id: isort
         args:
@@ -71,6 +71,7 @@ repos:
           - packaging
           - pytest
           - pytest-mock
+          - referencing
           - types-PyYAML
           - types-pkg_resources
           - types-requests
