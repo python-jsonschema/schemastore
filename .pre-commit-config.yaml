@@ -1,38 +1,26 @@
----
-ci:
-  # format compatible with commitlint
-  autoupdate_commit_msg: "chore: pre-commit autoupdate"
-  autoupdate_schedule: monthly
-  autofix_commit_msg: |
-    chore: auto fixes from pre-commit.com hooks
-
-    for more information, see https://pre-commit.ci
-  skip:
-    # https://github.com/pre-commit-ci/issues/issues/55
-    - pip-compile
-default_language_version:
-  # Needed in order to make pip-compile output predictable.
-  python: python3.9
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks.git
+  - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
     hooks:
-      - id: end-of-file-fixer
-      - id: trailing-whitespace
-      - id: mixed-line-ending
-      - id: check-byte-order-marker
       - id: check-executables-have-shebangs
       - id: check-merge-conflict
+      - id: check-toml
+      - id: check-vcs-permalinks
+      - id: check-yaml
       - id: debug-statements
-        language_version: python3
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+        args: [--fix, lf]
+      - id: trailing-whitespace
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: "v0.3.4"
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
   - repo: https://github.com/codespell-project/codespell
     rev: v2.2.6
     hooks:
       - id: codespell
-  - repo: https://github.com/PyCQA/doc8
-    rev: v1.1.1
-    hooks:
-      - id: doc8
   - repo: https://github.com/adrienverge/yamllint.git
     rev: v1.35.1
     hooks:
@@ -40,69 +28,9 @@ repos:
         files: \.(yaml|yml)$
         types: [file, yaml]
         entry: yamllint --strict
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.13.2
-    hooks:
-      - id: isort
-        args:
-          # https://github.com/pre-commit/mirrors-isort/issues/9#issuecomment-624404082
-          - --filter-files
   - repo: https://github.com/psf/black
-    rev: 24.2.0
+    rev: 24.3.0
     hooks:
-      - id: black
-        language_version: python3
-  - repo: https://github.com/pycqa/flake8.git
-    rev: 7.0.0
-    hooks:
-      - id: flake8
-        language_version: python3
-        additional_dependencies:
-          - flake8-2020>=1.6.0
-          - flake8-docstrings>=1.5.0
-          - flake8-pytest-style>=1.2.2
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.8.0
-    hooks:
-      - id: mypy
-        # empty args needed in order to match mypy cli behavior
-        args: ["--strict"]
-        additional_dependencies:
-          - packaging
-          - pytest
-          - pytest-mock
-          - referencing
-          - types-PyYAML
-          - types-pkg_resources
-          - types-requests
-          - requests-cache
-  - repo: https://github.com/pre-commit/mirrors-pylint
-    rev: v3.0.0a5
-    hooks:
-      - id: pylint
-        additional_dependencies:
-          - PyYAML
-          - pytest
-          - typing_extensions
-  # Keep last due to being considerably slower than the others:
-  - repo: local
-    hooks:
-      - id: pip-compile-upgrade
-        # To run it execute: `pre-commit run pip-compile-upgrade --hook-stage manual`
-        name: Upgrade contraints files and requirements
-        files: ^(setup\.py|setup\.cfg|constraints\.txt)$
-        language: python
-        entry: python -m piptools compile --upgrade -q --extra test --extra retry --output-file=constraints.txt setup.cfg
-        pass_filenames: false
-        stages:
-          - manual
-        additional_dependencies:
-          - pip-tools>=6.4.0
-      - id: pip-compile
-        name: Check contraints files and requirements
-        files: ^(setup\.py|setup\.cfg|constraints\.txt)$
-        language: python
-        entry: python -m piptools compile -q --extra test --extra retry --output-file=constraints.txt setup.cfg
-        pass_filenames: false
-        additional_dependencies:
-          - pip-tools>=6.4.0
+      - name: black
+        id: black
+        args: ["--line-length", "79"]
