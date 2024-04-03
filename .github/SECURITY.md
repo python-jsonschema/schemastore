@@ -2,11 +2,11 @@
 
 ## Supported Versions
 
-In general, only the latest released `referencing` version is supported and will receive updates.
+In general, only the latest released `schemastore` version is supported and will receive updates.
 
 ## Reporting a Vulnerability
 
-To report a security vulnerability, please send an email to `Julian+Security` at `GrayVines.com` with subject line `SECURITY (referencing)`.
+To report a security vulnerability, please send an email to `Julian+Security` at `GrayVines.com` with subject line `SECURITY (schemastore)`.
 
 I will do my best to respond within 48 hours to acknowledge the message and discuss further steps.
 
