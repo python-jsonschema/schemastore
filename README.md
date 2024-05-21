@@ -1,24 +1,46 @@
-# schemastorepy
+# schematore.py
 
-Contains all JSON Schemas from [schemastore.org](https://schemastore.org)
-catalog so you can make use of them without needing internet access.
+A collection of all JSON Schemas from the [schemastore.org](https://schemastore.org) catalog, installable so they may be used without internet access.
 
-## How to use
+## Installation
+
+Use your favorite package manager, e.g. via:
+
+    $ uv pip install schemastore
+
+or
+
+    $ pip install schemastore
+
+## Usage
+
+Schemas are made usable as a [`referencing.Registry`](https://referencing.readthedocs.io/en/stable/api/#referencing.Registry).
+It is available as:
+
 
 ```python
-from schemastore import Store
-
-store = Store(days=30)
-my_schema_json = store.get('http://...') # <-- no network access happens
+import schemastore
+registry = schemastore.registry()
 ```
 
-The `days` parameter is optional and defaults to 30, which means that after
-this it will start checking if the locally cached schema is up to date and
-refresh it it needed. `store.catalog` would contain
-the content of the catalog itself.
+and use any of the API from the aforementioned referencing package to make use of the schemas, such as:
 
-## Stats
+```python
+print(registry.get_or_retrieve("https://json.schemastore.org/github-action.json").value)
 
-- Over 500 JSON Schemas in the catalog
-- ~2.5Mib package size
-- ~30Mib installed size
+```
+
+though more typically you will use the registry alongside a JSON Schema validator such as those provided by the [`jsonschema` library](https://python-jsonschema.readthedocs.io/):
+
+```python
+import jsonschema
+import schemastore
+
+
+# Validate whether the string "foo" is a valid GitHub actions workflow (it is not.)
+jsonschema.validate(
+    '"foo"',
+    {"$ref": "https://json.schemastore.org/github-action.json"},
+    registry=schemastore.registry(),
+)
+```
