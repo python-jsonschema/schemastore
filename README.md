@@ -1,4 +1,4 @@
-# schematore.py
+# schemastore.py
 
 A collection of all JSON Schemas from the [schemastore.org](https://schemastore.org) catalog, installable so they may be used without internet access.
 
