@@ -29,7 +29,7 @@ repos:
         types: [file, yaml]
         entry: yamllint --strict
   - repo: https://github.com/psf/black
-    rev: 24.8.0
+    rev: 24.10.0
     hooks:
       - name: black
         id: black
