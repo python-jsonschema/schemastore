@@ -21,18 +21,21 @@ classifiers = [
   "License :: OSI Approved :: Apache Software License",
   "Operating System :: OS Independent",
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
   "Topic :: File Formats :: JSON",
   "Topic :: File Formats :: JSON :: JSON Schema",
 ]
 dynamic = ["version"]
-dependencies = ["referencing", "requests-cache>=1.0.0a0"]
+dependencies = [
+  "referencing",
+  "requests-cache>=1.0.0a0"
+]
 
 [project.urls]
 Homepage = "https://github.com/python-jsonschema/schemastore"
@@ -58,16 +61,16 @@ skip_covered = true
 
 [tool.doc8]
 ignore = [
-    "D000",  # see PyCQA/doc8#125
-    "D001",  # one sentence per line, so max length doesn't make sense
+  "D000",  # see PyCQA/doc8#125
+  "D001",  # one sentence per line, so max length doesn't make sense
 ]
 
 [tool.pyright]
 reportUnnecessaryTypeIgnoreComment = true
 strict = ["**/*"]
 exclude = [
-    "**/tests/__init__.py",
-    "**/tests/test_*.py",
+  "**/tests/__init__.py",
+  "**/tests/test_*.py",
 ]
 
 [tool.ruff]
@@ -117,7 +120,7 @@ ignore = [
   "SIM300", # Not sure what heuristic this uses, but it's easily incorrect
   "SLF001",  # Private usage within this package itself is fine
   "TD",  # These TODO style rules are also silly
-  "UP007",  # We support 3.8 + 3.9
+  "UP007",  # We support 3.9
 ]
 
 [tool.ruff.lint.flake8-pytest-style]
