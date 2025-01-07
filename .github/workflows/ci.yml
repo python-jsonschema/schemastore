@@ -12,10 +12,6 @@ on:
     - cron: "33 8 * * *"
   workflow_dispatch:
 
-env:
-  PIP_DISABLE_PIP_VERSION_CHECK: "1"
-  PIP_NO_PYTHON_VERSION_WARNING: "1"
-
 jobs:
   list:
     runs-on: ubuntu-latest
@@ -65,14 +61,14 @@ jobs:
             3.13
             pypy3.10
           allow-prereleases: true
-          cache: pip
+
       - name: Set up uv
-        uses: hynek/setup-cached-uv@v2
-      - name: Set up nox
-        uses: wntrblm/nox@2024.10.09
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
 
       - name: Run nox
-        run: nox -s "${{ matrix.noxenv }}" -- ${{ matrix.posargs }}
+        run: uvx nox -s "${{ matrix.noxenv }}" -- ${{ matrix.posargs }}
 
   packaging:
     needs: ci
@@ -89,15 +85,15 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: "recursive"
-      - name: Set up Python
-        uses: actions/setup-python@v5
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
         with:
-          cache: pip
-          python-version: "3.x"
-      - name: Install dependencies
-        run: python -m pip install build
-      - name: Create packages
-        run: python -m build .
+          enable-cache: true
+
+      - name: Build our distributions
+        run: uv run --with 'build[uv]' -m build --installer=uv
+
       - name: Publish to PyPI
         if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
         uses: pypa/gh-action-pypi-publish@release/v1
