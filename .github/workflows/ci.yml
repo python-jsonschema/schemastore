@@ -19,12 +19,14 @@ jobs:
       noxenvs: ${{ steps.noxenvs-matrix.outputs.noxenvs }}
     steps:
       - uses: actions/checkout@v4
-      - name: Set up nox
-        uses: wntrblm/nox@2024.10.09
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
       - id: noxenvs-matrix
         run: |
           echo >>$GITHUB_OUTPUT noxenvs=$(
-            nox --list-sessions --json | jq '[.[].session]'
+            uvx nox --list-sessions --json | jq '[.[].session]'
           )
 
   ci:
