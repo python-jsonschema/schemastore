@@ -50,7 +50,7 @@ def registry(**kwargs: Any) -> SchemaRegistry:
     store = _Store(**kwargs)
 
     def retrieve(uri: str) -> SchemaResource:
-        return Resource.from_contents(store.get_schema(uri))  # type: ignore[reportUnknownMemberType, reportUnknownVariableType]
+        return Resource.from_contents(store.get_schema(uri))
 
     return Registry(retrieve=retrieve)
 
