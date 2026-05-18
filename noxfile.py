@@ -8,17 +8,10 @@ ROOT = Path(__file__).parent
 PYPROJECT = ROOT / "pyproject.toml"
 PACKAGE = ROOT / "schemastore"
 
-REQUIREMENTS = dict(
-    tests=ROOT / "test-requirements.txt",
-)
-REQUIREMENTS_IN = [  # this is actually ordered, as files depend on each other
-    (path.parent / f"{path.stem}.in", path) for path in REQUIREMENTS.values()
-]
-
-SUPPORTED = ["3.9", "3.10", "pypy3.10", "3.11", "3.12", "3.13"]
+SUPPORTED = ["3.11", "pypy3.11", "3.12", "3.13", "3.14"]
 LATEST = SUPPORTED[-1]
 
-nox.options.default_venv_backend = "uv|virtualenv"
+nox.options.default_venv_backend = "uv"
 nox.options.sessions = []
 
 
@@ -36,7 +29,12 @@ def tests(session):
     """
     Run the test suite with a corresponding Python version.
     """
-    session.install("-r", REQUIREMENTS["tests"])
+    session.run_install(
+        "uv",
+        "sync",
+        f"--python={session.virtualenv.location}",
+        env={"UV_PROJECT_ENVIRONMENT": session.virtualenv.location},
+    )
 
     if session.posargs and session.posargs[0] == "coverage":
         if len(session.posargs) > 1 and session.posargs[1] == "github":
@@ -102,24 +100,5 @@ def typing(session):
     """
     Check static typing.
     """
-    session.install("pyright", ROOT)
-    session.run("pyright", *session.posargs, PACKAGE)
-
-
-@session(default=False)
-def requirements(session):
-    """
-    Update the project's pinned requirements.
-
-    You should commit the result afterwards.
-    """
-    if session.venv_backend == "uv":
-        cmd = ["uv", "pip", "compile"]
-    else:
-        session.install("pip-tools")
-        cmd = ["pip-compile", "--resolver", "backtracking", "--strip-extras"]
-
-    for each, out in REQUIREMENTS_IN:
-        # otherwise output files end up with silly absolute path comments...
-        relative = each.relative_to(ROOT)
-        session.run(*cmd, "--upgrade", "--output-file", out, relative)
+    session.install("ty", ROOT)
+    session.run("ty", "check", *session.posargs, PACKAGE)

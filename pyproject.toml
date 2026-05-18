@@ -8,7 +8,7 @@ source = "vcs"
 [project]
 name = "schemastore"
 description = "Easy use of the JSON SchemaStore from Python, as a referencing.Registry"
-requires-python = ">=3.8"
+requires-python = ">=3.11"
 readme = "README.md"
 keywords = ["schemastore", "json", "yaml", "schemas", "referencing", "jsonschema"]
 authors = [
@@ -21,11 +21,10 @@ classifiers = [
   "License :: OSI Approved :: Apache Software License",
   "Operating System :: OS Independent",
   "Programming Language :: Python",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
   "Programming Language :: Python :: Implementation :: CPython",
   "Programming Language :: Python :: Implementation :: PyPy",
   "Topic :: File Formats :: JSON",
@@ -41,6 +40,11 @@ dependencies = [
 Homepage = "https://github.com/python-jsonschema/schemastore"
 Issues = "https://github.com/python-jsonschema/schemastore/issues/"
 Source = "https://github.com/python-jsonschema/schemastore"
+
+[dependency-groups]
+dev = [
+  "pytest>=8.3.4",
+]
 
 [tool.coverage.html]
 show_contexts = true
@@ -65,9 +69,7 @@ ignore = [
   "D001",  # one sentence per line, so max length doesn't make sense
 ]
 
-[tool.pyright]
-reportUnnecessaryTypeIgnoreComment = true
-strict = ["**/*"]
+[tool.ty.src]
 exclude = [
   "**/tests/__init__.py",
   "**/tests/test_*.py",
@@ -120,7 +122,6 @@ ignore = [
   "SIM300", # Not sure what heuristic this uses, but it's easily incorrect
   "SLF001",  # Private usage within this package itself is fine
   "TD",  # These TODO style rules are also silly
-  "UP007",  # We support 3.9
 ]
 
 [tool.ruff.lint.flake8-pytest-style]
