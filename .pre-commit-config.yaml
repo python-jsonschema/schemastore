@@ -22,7 +22,7 @@ repos:
       - id: mixed-line-ending
         args: [--fix, lf]
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.2
+    rev: v2.4.3
     hooks:
       - id: codespell
   - repo: https://github.com/adrienverge/yamllint.git
@@ -33,14 +33,14 @@ repos:
         types: [file, yaml]
         entry: yamllint --strict
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.15.20
+    rev: v0.16.1
     hooks:
       - id: ruff-format
         alias: ruff
       - id: ruff-check
         alias: ruff
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: v1.26.1
+    rev: v1.29.0
     hooks:
       - id: zizmor
         args: [--pedantic]
