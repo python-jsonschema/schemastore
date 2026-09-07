@@ -20,14 +20,18 @@ It is available as:
 
 ```python
 import schemastore
+
 registry = schemastore.registry()
 ```
 
 and use any of the API from the aforementioned referencing package to make use of the schemas, such as:
 
 ```python
-print(registry.get_or_retrieve("https://json.schemastore.org/github-action.json").value)
-
+print(
+    registry.get_or_retrieve(
+        "https://json.schemastore.org/github-action.json"
+    ).value
+)
 ```
 
 though more typically you will use the registry alongside a JSON Schema validator such as those provided by the [`jsonschema` library](https://python-jsonschema.readthedocs.io/):
